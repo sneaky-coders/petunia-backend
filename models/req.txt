@@ -1,0 +1,5 @@
+I need you to give me code for randomtimetable with below conditions
+1. Faculties alloted for specific semester div and course should be alloted
+2. Courses with credits 0 or more than 2 will be classes 4 per week 
+3. courses with credits 2 and name ends with Lab will have 1 class per week at 1-3pm only
+4. all courses should be alloted and occupied at proper time satrting from 10am 
