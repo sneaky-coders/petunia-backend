@@ -13,7 +13,7 @@ use yii\db\Query;
 use app\models\Properties;
 use app\models\ContactUs;
 use yii\web\BadRequestHttpException;
-
+use app\models\Category;
 
 /**
  * ApiController implements the CRUD actions for Api model.
@@ -70,6 +70,41 @@ public function behaviors()
             'data' => $properties,
         ];
     }
+    
+    public function actionGetCategory()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        // Fetching all properties with category details
+        $properties = Category::find()
+            ->asArray()
+            ->all();
+
+        return [
+            'status' => 'success',
+            'data' => $properties,
+        ];
+    }
+    
+    
+    
+    public function actionGetLatestProperties()
+{
+    Yii::$app->response->format = Response::FORMAT_JSON;
+
+    // Fetch the latest 3 properties ordered by created_at in descending order
+    $latestProperties = Properties::find()
+        ->orderBy(['created_at' => SORT_DESC])
+        ->limit(3)
+        ->asArray()
+        ->all();
+
+    return [
+        'status' => 'success',
+        'data' => $latestProperties,
+    ];
+}
+
 
    public function beforeAction($action)
     {
