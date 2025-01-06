@@ -14,6 +14,7 @@ use app\models\Properties;
 use app\models\ContactUs;
 use yii\web\BadRequestHttpException;
 use app\models\Category;
+use app\models\PropertyEnquiry;
 
 /**
  * ApiController implements the CRUD actions for Api model.
@@ -71,6 +72,45 @@ public function behaviors()
         ];
     }
     
+public function actionGetPropertyById($id)
+{
+    Yii::$app->response->format = Response::FORMAT_JSON;
+
+    // Handle CORS preflight request (only if necessary)
+    if (Yii::$app->request->isOptions) {
+        Yii::$app->response->statusCode = 200;
+        Yii::$app->response->headers->set('Access-Control-Allow-Origin', '*'); // Update origin as necessary
+        Yii::$app->response->headers->set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        Yii::$app->response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        Yii::$app->response->headers->set('Access-Control-Allow-Credentials', 'true');
+        return;
+    }
+
+    // Fetching a single property based on ID
+    $property = Properties::find()
+        ->where(['id' => $id])
+        ->asArray()
+        ->one();
+
+    // If property is not found, return an error message
+    if ($property === null) {
+        return [
+            'status' => 'error',
+            'message' => 'Property not found',
+        ];
+    }
+
+    // Returning the success response with the property data
+    return [
+        'status' => 'success',
+        'data' => $property,
+    ];
+}
+
+
+
+
+    
     public function actionGetCategory()
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
@@ -106,13 +146,14 @@ public function behaviors()
 }
 
 
-   public function beforeAction($action)
-    {
-        if ($action->id === 'contact-us') {
-            Yii::$app->controller->enableCsrfValidation = false;
-        }
-        return parent::beforeAction($action);
+public function beforeAction($action)
+{
+    if ($action->id === 'contact-us' || $action->id === 'submit-enquiry') {
+        Yii::$app->controller->enableCsrfValidation = false;
     }
+    return parent::beforeAction($action);
+}
+
 
     public function actionContactUs()
     {
@@ -160,37 +201,43 @@ public function behaviors()
         // Only POST method is allowed
         throw new BadRequestHttpException('Only POST method is allowed.');
     }
+    
+    
 
     public function actionSubmitEnquiry()
-    {
-        Yii::$app->response->format = Response::FORMAT_JSON;
+{
+    Yii::$app->response->format = Response::FORMAT_JSON;
 
-        $request = Yii::$app->request;
-        if (!$request->isPost) {
-            throw new BadRequestHttpException('Only POST requests are allowed.');
-        }
+    $request = Yii::$app->request;
+    if (!$request->isPost) {
+        throw new BadRequestHttpException('Only POST requests are allowed.');
+    }
 
-        $data = $request->post();
+    $data = $request->post();
 
-        $model = new PropertyEnquiry();
-        $model->property_id = $data['property_id'] ?? null;
-        $model->name = $data['name'] ?? null;
-        $model->email = $data['email'] ?? null;
-        $model->phone = $data['phone'] ?? null;
-        $model->message = $data['message'] ?? null;
+    $model = new PropertyEnquiry();
+    $model->property_id = $data['property_id'] ?? null;
+    $model->name = $data['name'] ?? null;
+    $model->email = $data['email'] ?? null;
+    $model->phone = $data['phone'] ?? null;
+    $model->message = $data['message'] ?? null;
 
-        if ($model->validate() && $model->save()) {
-            return [
-                'status' => 'success',
-                'message' => 'Your enquiry has been submitted successfully. We will get back to you shortly.',
-            ];
-        }
+    // Set the enquiry_date to the current timestamp
+    $model->enquiry_date = date('Y-m-d H:i:s'); // Current date and time
 
+    if ($model->validate() && $model->save()) {
         return [
-            'status' => 'error',
-            'errors' => $model->errors,
+            'status' => 'success',
+            'message' => 'Your enquiry has been submitted successfully. We will get back to you shortly.',
         ];
     }
+
+    return [
+        'status' => 'error',
+        'errors' => $model->errors,
+    ];
+}
+
 
 
 

@@ -52,6 +52,20 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'image5')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'bedroom')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'bathroom')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'year_built')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'furnishing')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'kitchen')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'floor')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'video_link')->textInput(['maxlength' => true]) ?>
+
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

@@ -18,7 +18,7 @@ class SearchProperties extends Properties
     {
         return [
             [['id', 'category_id'], 'integer'],
-            [['title', 'description', 'pincode', 'state', 'region', 'taluka', 'district', 'city', 'address_line1', 'address_line2', 'created_at', 'updated_at', 'image1', 'image2', 'image3', 'image4', 'image5'], 'safe'],
+            [['title', 'description', 'pincode', 'state', 'region', 'taluka', 'district', 'city', 'address_line1', 'address_line2', 'created_at', 'updated_at', 'image1', 'image2', 'image3', 'image4', 'image5', 'bedroom', 'bathroom', 'year_built', 'furnishing', 'kitchen', 'floor', 'video_link'], 'safe'],
             [['price', 'area'], 'number'],
         ];
     }
@@ -81,7 +81,14 @@ class SearchProperties extends Properties
             ->andFilterWhere(['like', 'image2', $this->image2])
             ->andFilterWhere(['like', 'image3', $this->image3])
             ->andFilterWhere(['like', 'image4', $this->image4])
-            ->andFilterWhere(['like', 'image5', $this->image5]);
+            ->andFilterWhere(['like', 'image5', $this->image5])
+            ->andFilterWhere(['like', 'bedroom', $this->bedroom])
+            ->andFilterWhere(['like', 'bathroom', $this->bathroom])
+            ->andFilterWhere(['like', 'year_built', $this->year_built])
+            ->andFilterWhere(['like', 'furnishing', $this->furnishing])
+            ->andFilterWhere(['like', 'kitchen', $this->kitchen])
+            ->andFilterWhere(['like', 'floor', $this->floor])
+            ->andFilterWhere(['like', 'video_link', $this->video_link]);
 
         return $dataProvider;
     }

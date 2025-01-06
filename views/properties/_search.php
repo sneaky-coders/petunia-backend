@@ -57,6 +57,20 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'image5') ?>
 
+    <?php // echo $form->field($model, 'bedroom') ?>
+
+    <?php // echo $form->field($model, 'bathroom') ?>
+
+    <?php // echo $form->field($model, 'year_built') ?>
+
+    <?php // echo $form->field($model, 'furnishing') ?>
+
+    <?php // echo $form->field($model, 'kitchen') ?>
+
+    <?php // echo $form->field($model, 'floor') ?>
+
+    <?php // echo $form->field($model, 'video_link') ?>
+
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
